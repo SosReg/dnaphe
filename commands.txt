@@ -1,0 +1,4 @@
+curl https://www.dnaphe.com/botPost
+curl https://www.dnaphe.com/kantipurbotPost
+curl https://www.dnaphe.com/gpbotPost
+

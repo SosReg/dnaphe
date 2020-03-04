@@ -1,0 +1,378 @@
+{% load static %}
+{% load markdown_deux_tags %}
+<!DOCTYPE html>
+<html lang="en" xmlns:bg-img="http://www.w3.org/1999/xhtml">
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138331567-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-138331567-1');
+</script>
+
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="Copyright" content="dnaphe.com" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="/static/home/logo.png">
+    <link rel="icon" href="/static/home/fav_icon.png">
+    <link rel="shortcut icon" href="/static/home/fav_icon.png">
+    <meta name="msapplication-TileImage" content="/static/home/logo.png">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+          integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
+
+    {% block head %}
+    {% if title %}
+        <title> {{ title }} </title>
+    {% else %}
+        <title>dnaphe</title>
+		<meta property="og:image" content="/static/home/logo.png">
+		<meta property="og:title" content="dnaphe">
+		<meta property="og:description" content="dnaphe.com">
+		<meta property="og:url" content="https://www.dnaphe.com">
+    {% endif %}
+    {% endblock %}
+
+<style>
+    hr.beautify {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+    img {
+    width: 50%;
+}
+
+h4, h3, p {
+	word-wrap: break-word;
+}
+
+
+body {
+    background-image: url("/static/home/nepal_640.png");
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+}
+
+</style>
+
+</head>
+<body >
+<!--<div class="parallax">-->
+<!--####big screen header#####-->
+<header class="site-header w3-margin-bottom w3-hide-small">
+  <nav class="navbar navbar-expand-md  navbar-light bg-white w3-card-4 fixed-top" >
+    <div class="container">
+      <a class="navbar-brand mr-4 w3-text-light-green" href="/">
+          <font size="5">dnaphe</font><span class="w3-small w3-text-yellow"> beta</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link w3-text-light-green" href="/popular">
+            {% if request.path == "/popular/" %}
+              <strong> popular </strong>
+            {% else %}
+              popular
+            {% endif %}
+          </a>
+            <a class="nav-item nav-link w3-text-light-green" href="/">
+              {% if request.path == "/" %}
+                <strong> all </strong>
+              {% else %}
+                all
+              {% endif %}
+            </a>
+            <a class="nav-item nav-link w3-text-light-green" href="/news">
+              {% if request.path == "/news/" %}
+                <strong> news </strong>
+              {% else %}
+                news
+              {% endif %}
+            </a>
+            <form class="input-group input-group-sm" style="margin-top: 3px;" action="/search" method="get">
+            <input class="form-control  w3-small py-2 bg-transparent border-right-0 border-left-0 border-top-0" type="search"  placeholder="search" name="search_input" >
+            <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-right-0 border-left-0 border-top-0 border-bottom-0">
+                <button type="search" value="Search" class="bg-transparent border-right-0 border-left-0 border-top-0 border-bottom-0">
+                    <i class="fa fa-search">
+                    </i>
+                </button>
+                </div>
+            </span>
+        </form>
+        </div>
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+            <a class="nav-item nav-link w3-text-yellow" href="{% url 'user-profile' user.username %}">hello {{user.username}}</a>
+            <a class="nav-item nav-link w3-text-light-green" href="/post/newtext">New Post</a>
+            {% if user.is_staff %}
+                <a class="nav-item nav-link w3-text-light-green" href="/botpage">botpage</a>
+            {% endif %}
+            <a class="nav-item nav-link w3-text-light-green" href="/logout">Logout</a>
+          {% else %}
+            <a class="nav-item nav-link w3-text-light-green" href="/login">Login</a>
+            <a class="nav-item nav-link w3-text-light-green" href="/register">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header><br><br>
+
+<!--####small screen header#####-->
+<div class="w3-hide-large">
+<div class="fixed-top bg-white ">
+<nav class="navbar w3-card">
+  <!-- Brand/logo -->
+
+  <a class="navbar-brand w3-text-light-green" href="/">dnaphe
+    <span class="w3-small w3-text-yellow"> beta</span>
+  </a>
+
+
+  <!-- Links -->
+  <div class="row">
+  <ul class="nav justify-content-end">
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+      <a class=" nav-link w3-text-yellow" href="{% url 'user-profile' user.username %}">profile</a>
+<!--        <a class="nav-item nav-link w3-text-light-green" href="/register">Register</a>-->
+<!--      <a class="nav-link" href="#">SignIn</a>-->
+    </li>
+      <li class="nav-item">
+      <a onclick="document.getElementById('id01').style.display='block'" class="nav-link w3-text-light-green">post</a>
+
+    <div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+        <h5 class="w3-center">Please choose a type of post!</h5>
+      </header>
+      <div class="w3-container">
+      <div class="modal-body w3-center">
+        <a href="/post/newtext" class="w3-button">Text</a>
+        <a href="/post/newlink" class="w3-button">Link</a>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    </li>
+      <li class="nav-item">
+      <a class=" nav-link w3-text-light-green" href="/logout">logout</a>
+    </li>
+  {% else %}
+   <li class="nav-item">
+      <a class=" nav-link w3-text-yellow" href="/login">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class=" nav-link w3-text-light-green" href="/register">Register</a>
+    </li>
+  {% endif %}
+  </ul>
+  </div>
+
+
+</nav>
+
+<div class="w3-card w3-small">
+  <ul class="nav  wjustify-content-center" style="width:max-content;">
+    <li class="nav-item">
+      <a class="nav-link" href="/news">
+        {% if request.path == "/news/" %}
+          <strong> news </strong>
+        {% else %}
+          news
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/popular">
+        {% if request.path == "/popular/" %}
+          <strong> popular </strong>
+        {% else %}
+          popular
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/">
+        {% if request.path == "/" %}
+          <strong> all </strong>
+        {% else %}
+          all
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+
+        <form class="input-group input-group-sm" style="margin-top: 3px;" action="/search" method="get">
+            <input class="form-control  w3-small py-2 bg-transparent border-right-0 border-left-0 border-top-0" type="search"  placeholder="search" name="search_input" >
+            <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-right-0 border-left-0 border-top-0">
+                <button type="search" value="Search" class="bg-transparent border-right-0 border-left-0 border-top-0 border-bottom-0">
+                    <i class="fa fa-search">
+                    </i>
+                </button>
+                </div>
+            </span>
+        </form>
+    </li>
+  </ul>
+ </div>
+</div><br><br>
+</div>
+
+
+
+<div class="container w3-margin-top">
+
+<!--****************** put everything in a row ******************-->
+<div class="row">
+
+<!--******************** start left column for profile *********************-->
+
+      <div class="col-2 w3-hide-small w3-hide-medium">
+
+          <div align="center">
+                  {% if user.is_authenticated %}
+                        <button type="button" class="btn w3-light-grey w3-text-light-green" data-toggle="modal" data-target="#signinModal">
+                          Post
+                        </button>
+                        <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="signinModalLabel">Please choose a type of post!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                  <a href="/post/newtext" class="w3-button">Text</a>
+                                  <a href="/post/newlink" class="w3-button">Link</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                  {% else %}
+                        <button type="button" class="btn w3-light-grey w3-text-light-green"  data-toggle="modal" data-target="#postModal">
+                          Post
+                        </button>
+                        <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="postModalLabel">Please log in to continue!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                  {% load crispy_forms_tags %}
+                                <div class="content-section">
+                                <form method="POST" action="/login/">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                        <!--                <legend class="border-bottom-mb-4">Log In</legend>-->
+                                        <div id="div_id_username" class="form-group">
+                                            <label for="id_username" class="col-form-label  requiredField">Username<span class="asteriskField">*</span>
+                                            </label>
+                                            <div class="">
+                                                <input type="text" name="username" autofocus class="textinput textInput form-control" required id="id_username">
+                                            </div>
+                                        </div>
+                                        <div id="div_id_password" class="form-group">
+                                            <label for="id_password" class="col-form-label  requiredField">Password<span class="asteriskField">*</span>
+                                            </label>
+                                            <div class="">
+                                                <input type="password" name="password" class="textinput textInput form-control" required id="id_password">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <button class="btn btn-outline-info" type="submit">Login</button>
+                                    </div>
+                                </form>
+                                <div class="border-top pt-3">
+                                    <small class="text-muted">
+                                        Need an Account? <a class="ml-2" href="/register/">Sign Up Now</a>
+                                    </small>
+                                </div>
+                            </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                  {% endif %}
+              </div>
+
+      </div>
+<!--******************** end left column *******************************-->
+
+<!--************ start middle column ***********-->
+
+<div class="col">
+
+<!--************* show messages for sign up *************-->
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+<!--******************** list all the post *************-->
+
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+<!--***************end of the middle column**************-->
+
+<!--*************** start right column ******************-->
+
+    <div class="col-2 w3-hide-small w3-hide-medium" >
+
+    </div>
+
+<!--**************** end right column ********************-->
+
+  </div>
+</div>
+<!--</div>-->
+
+
+<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+</body>
+</html>
