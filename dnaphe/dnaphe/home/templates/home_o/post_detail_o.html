@@ -1,0 +1,260 @@
+<title>dnaphe</title>
+{% extends "home/base.html" %}
+{% load humanize %}
+{% block content %}
+{% for post in posts %}
+<div name="post_placeholder" id="paceholder_{{post.id}}">
+<div class="w3-card-4 w3-white w3-round" id="{{ post.id }}">
+    <header class="w3-container card-header w3-small text-muted" style="margin-bottom: 0;">
+        <p style="margin-bottom: 0;">on
+            <b>
+                <a href="{% url 'topics-home' post.topic.id %}">{{post.topic}}</a>
+            </b> by
+            <b>
+                <a href="{% url 'user-profile' post.author %}">{{post.author}}</a>
+            </b>
+        <span class="w3-right" style="margin-bottom: 0;">{{post.date_posted|naturaltime}}</span>
+      </p>
+    </header>
+<!--      <hr class="beautify">-->
+
+    <div class="w3-container">
+        <h3>{{post.title}}</h3>
+      <div class="row">
+
+                <div class="col">
+				
+				{% if post.url %}
+                    <a href="{{ post.url }}" target="_blank" style="text-decoration: none">{{ post.content }} </a>
+				{% else %}		   
+					<p>{{post.content}}</p>								   
+				{% endif %}	  
+                </div>
+				
+				{% if post.video_url and post.img_url%}
+				<div class="col">
+                    <iframe width="100%" src="{{post.video_url}}" frameborder="0" allow="gyroscope; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                {% elif post.img_url %}
+                <div class="col">
+                    <a href="{{ post.url }}" target="_blank" style="text-decoration: none">
+                        <div class="w3-card w3-hover-shadow">
+                            <img src="{{post.img_url}}" style="width: 100%">
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+
+        </div>
+    </div>
+    <hr class="beautify">
+
+      <footer class="w3-container w3-small text-muted" style="margin-bottom: 0;">
+        <p style="margin-bottom: 0;">
+            {% if user.is_authenticated %}
+            <a href="{% url 'upvote' post.id %}" name="post_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-up'></i>
+            </a>
+            {% else %}
+            <button data-toggle="modal" class="w3-white" style="border: none;" data-target="#signInModal" name="post_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-up'></i>
+            </button>
+            {% endif %}
+            {% if post.upvote != 0 %}
+                    {{post.upvote}}
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'downvote' post.id %}" name="post_downvote" style="text-decoration: none">
+                        <i class='fas fa-long-arrow-alt-down'></i>
+            </a>
+            {% else %}
+            <button data-toggle="modal" class="w3-white" style="border: none;" data-target="#signInModal" name="post_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-down'></i>
+            </button>
+            {% endif %}
+
+            {% if post.downvote != 0 %}
+                    {{post.downvote}}
+            {% endif %}
+            {% if post.author == user or user.is_staff %}
+
+                <a href="{% url 'post-update' post.id %}" style="text-decoration: none">update</a>
+                <a href="{% url 'post-delete' post.id %}" style="text-decoration: none">delete</a>
+
+            {% endif %}
+            <span class="w3-right" style="margin-bottom: 0; margin-top: 3px;">
+<!--                <a href="#commentModal" name="post_downvote" style="text-decoration: none">-->
+<!--                    <i class='fas fa-reply'></i>-->
+<!--                </a>-->
+                {% if user.is_authenticated %}
+                <button type="button" data-toggle="modal" class="w3-white" style="border: none;" data-target="#postcommentModal">{{post.comments.count}}
+                    <i class='fas fa-reply'></i>
+                </button>
+                {% else %}
+                <button type="button" data-toggle="modal" class="w3-white" style="border: none;" data-target="#signInModal">{{post.comments.count}}
+                    <i class='fas fa-reply'></i>
+                </button>
+                {% endif %}
+            </span>
+        </p>
+      </footer>
+
+  </div><br>
+<div class="modal fade" id="postcommentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="commentModalLabel">Create a comment</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <form method="POST" class="post-form" action="{% url 'add_comment_to_post' post.id %}">
+            {% csrf_token %}
+                <p>
+                    <label for="id_comment_text">Comment text:</label>
+<!--                    <input type="text" name="comment_text" maxlength="1000" required="" id="id_comment_text">-->
+                    <textarea name="comment_text" style="width: 100%" rows="10" required="" id="id_comment_text"></textarea>
+                </p>
+                <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+
+{% for comment in comments %}
+<div name="comment_placeholder" id="paceholder_{{comment.id}}">
+<div class="w3-card-4 w3-white w3-round">
+    <header class="w3-container card-header w3-small text-muted" style="margin-bottom: 0;">
+        <p style="margin-bottom: 0;">by
+            <b>
+                <a href="{% url 'user-profile' comment.author %}">{{comment.author}}</a>
+            </b>
+            <span class="w3-right" style="margin-bottom: 0;">{{comment.date_posted|naturaltime}}</span>
+        </p>
+    </header>
+
+    <div class="w3-container w3-margin-top">
+        <p>{{comment.comment_text}}</p>
+    </div>
+    <hr class="beautify">
+
+    <footer class="w3-container w3-small text-muted" style="margin-bottom: 0;">
+        <p style="margin-bottom: 0;">
+            <a href="{% url 'comment_upvote' comment.id %}" name="comment_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-up'></i>
+            </a>
+            {% if comment.comment_upvote != 0 %}
+                    {{comment.comment_upvote}}
+            {% endif %}
+            <a href="{% url 'comment_downvote' comment.id %}" name="comment_downvote" style="text-decoration: none">
+                        <i class='fas fa-long-arrow-alt-down'></i>
+            </a>
+            {% if comment.comment_downvote != 0 %}
+                    {{comment.comment_downvote}}
+            {% endif %}
+
+            {% if post.author == user or user.is_staff %}
+
+                <a href="{% url 'comment-update' post_id=comment.post.id pk=comment.id %}" style="text-decoration: none">update</a>
+                <a href="{% url 'comment-delete' post_id=comment.post.id pk=comment.id %}" style="text-decoration: none">delete</a>
+
+            {% endif %}
+
+            <span class="w3-right" style="margin-bottom: 0; margin-top: 3px;">
+                {% if user.is_authenticated %}
+                <button type="button" data-toggle="modal" class="w3-white" style="border: none;" data-target="#commentcommentModal">
+                    <i class='fas fa-reply'></i>
+                </button>
+                {% else %}
+                <button type="button" data-toggle="modal" class="w3-white" style="border: none;" data-target="#signInModal">
+                    <i class='fas fa-reply'></i>
+                </button>
+                {% endif %}
+            </span>
+        </p>
+
+      </footer>
+  </div><br>
+<div class="modal fade" id="commentcommentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="commentModalLabel">Create a comment</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <form method="POST" class="post-form" action="{% url 'add_comment_to_post' comment.post.id %}">
+            {% csrf_token %}
+                <p>
+                    <label for="id_comment_text">Comment text:</label>
+                    <textarea name="comment_text" style="width: 100%" rows="10" required="" id="id_comment_text"></textarea>
+                </p>
+                <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+<!--************modals for comment button ******************-->
+
+
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postModalLabel">Please log in to continue!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {% load crispy_forms_tags %}
+        <div class="content-section">
+        <form method="POST" action="/login/">
+            {% csrf_token %}
+            <fieldset class="form-group">
+<!--                <legend class="border-bottom-mb-4">Log In</legend>-->
+                <div id="div_id_username" class="form-group">
+                    <label for="id_username" class="col-form-label  requiredField">Username<span class="asteriskField">*</span>
+                    </label>
+                    <div class="">
+                        <input type="text" name="username" autofocus class="textinput textInput form-control" required id="id_username">
+                    </div>
+                </div>
+                <div id="div_id_password" class="form-group">
+                    <label for="id_password" class="col-form-label  requiredField">Password<span class="asteriskField">*</span>
+                    </label>
+                    <div class="">
+                        <input type="password" name="password" class="textinput textInput form-control" required id="id_password">
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need an Account? <a class="ml-2" href="/register/">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+

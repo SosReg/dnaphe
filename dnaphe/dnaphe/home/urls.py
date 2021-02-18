@@ -1,0 +1,55 @@
+from django.urls import path
+from . import views
+from . import jobs
+from users import views as user_views
+from django.contrib.auth import views as auth_views
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import dnapheSitemap
+
+sitemaps = {
+    'static': dnapheSitemap,
+}
+
+
+urlpatterns = [
+	path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    # path('', views.index, name='index'),
+    path('', views.index, name='index'),
+    path('videos', views.videos, name='videos'),
+    path('discussions/', views.index, name='index'),
+    path('popular/', views.popular, name='popular'),
+    path('news/', views.news, name='news'),
+    path('headlines/', views.news, name='news'),
+    path('search/', views.searchView, name='search'),
+    path('botpage/', views.botpage, name='botpage'),
+    path('onlineKhabarBot/', views.onlineKhabarBot, name='onlineKhabarBot'),
+    path('kantipurDailyBot/', views.kantipurDailyBot, name='kantipurDailyBot'),
+    path('ratopatibot/', views.ratopatibot, name='ratopatibot'),
+    path('canadanepalbot/', views.canadanepalbot, name='canadanepalbot'),
+    path('botPost/', views.botPost, name='botPost'),
+    path('gpbotPost/', views.gpbotPost, name='gpbotPost'),
+    path('ytbotPost/', views.ytbotPost, name='ytbotPost'),
+    path('kantipurbotPost/', views.kantipurbotPost, name='kantipurbotPost'),
+    path('ratopatibotPost/', views.ratopatibotPost, name='ratopatibotPost'),
+    path('canadanepalbotPost/', views.canadanepalbotPost, name='canadanepalbotPost'),
+    path('post_upvote/<int:post_id>/', views.upvote, name='upvote'),
+    path('post_downvote/<int:post_id>/', views.downvote, name='downvote'),
+    path('register/', user_views.register, name='register'),
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('post/newtext/', views.PostTextCreateView.as_view(), name='new-textPost'),
+    # path('post/newlink/', views.PostLinkCreateView.as_view(), name='new-linkPost'),   #LinkPostCreateView
+    path('post/newlink/', views.LinkPostCreateView, name='new-linkPost'),
+    path('post/<int:post_id>/', views.PostDetailView, name='post-detail'),
+    path('topics/<int:topic_id>/', views.topicsHomeView, name='topics-home'),
+    path('user/<str:username>', views.userPostListView, name='user-profile'),
+    path('post/<int:post_id>/comment', views.add_comment_to_post, name='add_comment_to_post'),
+    path('post/comment_upvote/<int:c_id>', views.c_upvote, name='comment_upvote'),
+    path('post/comment_downvote/<int:c_id>', views.c_downvote, name='comment_downvote'),
+    path('post/<int:pk>/update', views.PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete', views.PostDeleteView.as_view(), name='post-delete'),
+    path('post/<int:post_id>/comment/<int:pk>/update', views.CommentUpdateView.as_view(), name='comment-update'),
+    path('post/<int:post_id>/comment/<int:pk>/delete', views.CommentDeleteView.as_view(), name='comment-delete'),
+	path('jobs/', jobs.coz_func, name='run_job'),
+    path('jobs_page/', jobs.jobs_page, name='jobs_page'),
+]

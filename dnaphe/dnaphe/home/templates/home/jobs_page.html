@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dnaphe.com-Internal Jobs</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+          integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+</head>
+<body>
+<div class = "container">
+<h1 >Dnaphe's Jobs Page</h1>
+<hr>
+{##job_name, job_desc, trigger, trigger_desc, job_status, job_msg#}
+{% for job in jobs %}
+    <div class="container">
+        <strong>Job: </strong>
+        <span>{{ job.job_name }}</span><br>
+        <strong>Job Description: </strong>
+        <span>{{ job.job_desc }}</span><br>
+        <strong>Trigger Status: </strong>
+        <span>
+            <input value="{{ job.trigger }}">
+            <button>Update</button>
+
+        </span>
+        <br>
+        <strong>Job Message: </strong>
+        <span>{{ job.job_msg }}</span><br>
+        <strong>Last Updated: </strong>
+        <span>{{ job.dte_last_update }}</span>
+    </div>
+    <hr>
+{% endfor %}
+</div>
+</body>
+</html>

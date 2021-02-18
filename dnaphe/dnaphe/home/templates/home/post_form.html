@@ -1,0 +1,23 @@
+<title>Dnaphe Create new post</title>
+{% extends "home/base.html" %}
+{% load markdown_deux_tags %}
+{% load crispy_forms_tags %}
+{% block content %}
+{{ form.media }}
+    <div class="content-section w3-white">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom-mb-4">New Post</legend>
+                    {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                  <!--Div tag to get recaptcha box-->
+            <div class="g-recaptcha" data-sitekey="6Lfz0vgZAAAAAEIKLvZEpiCkLWBQGNR7LjyfrceE"></div>
+                <button class="btn btn-outline-info" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
+    <!---Script for recaptcha-->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock content %}

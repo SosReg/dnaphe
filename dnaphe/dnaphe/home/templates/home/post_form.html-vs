@@ -1,0 +1,19 @@
+<title>Dnaphe Create new post</title>
+{% extends "home/base.html" %}
+{% load markdown_deux_tags %}
+{% load crispy_forms_tags %}
+{% block content %}
+{{ form.media }}
+    <div class="content-section w3-white">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom-mb-4">New Post</legend>
+                    {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Post</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

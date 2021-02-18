@@ -1,0 +1,190 @@
+
+
+
+{% extends 'home/base.html' %}
+{% load humanize %}
+{% load markdown_deux_tags %}
+{% block content %}
+{% for post in posts %}
+<div name="post_placeholder" id="paceholder_{{post.id}}">
+  <div class="w3-card-4 w3-white " id="{{ post.id }}" style="width:100%;">
+    <header class="w3-container  w3-small text-muted" style="margin-bottom: 0;">
+        <p style="margin-bottom: 0;">on
+            <b>
+                <a href="{% url 'topics-home' post.topic.id %}">{{post.topic}}</a>
+            </b> by
+            <b>
+                <a href="{% url 'user-profile' post.author %}">{{post.author}}</a>
+            </b>
+        <span class="w3-right" style="margin-bottom: 0;">{{post.date_posted|naturaltime}}</span>
+        </p>
+    </header>
+      <hr class="beautify">
+
+    <div class="w3-container col">
+        <a href="{% url 'post-detail' post.id %}" style="text-decoration: none"><h4>{{post.title}}</h4></a>
+      <div class="row">
+                {% if post.content %}
+				<div class="col">
+				{% if post.url %}
+
+                    <a href="{% url 'post-detail' post.id %}"  style="text-decoration: none">{{ post.content|linebreaks|truncatechars:95}}</a>
+
+				{% else %}
+
+                    <a href="{% url 'post-detail' post.id %}" style="text-decoration: none">{{ post.content|markdown|truncatewords_html:15 }}</a>
+
+                {% endif %}
+				</div>
+				{% endif %}
+                {% if post.video_url and post.img_url%}
+                <div class="col">
+                    <iframe width="100%" src="{{post.video_url}}" frameborder="0" allow="gyroscope; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                {% elif post.img_url %}
+                <div class="col">
+                    <a href="{{ post.url }}" target="_blank" style="text-decoration: none">
+                        <div class="w3-card w3-hover-shadow mt-2">
+                            <img src="{{post.img_url}}" style="width: 100%">
+                            <div class="w3-light-green" style="font-size:1vw">{{post.url|truncatechars:38}}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+        </div>
+    </div>
+    <hr class="beautify">
+
+      <footer class="w3-container w3-small text-muted" style="margin-bottom: 0;">
+        <p style="margin-bottom: 0;">
+<!--            <a href="{% url 'upvote' post.id %}" name="post_upvote" style="text-decoration: none">-->
+<!--                <i class='fas fa-long-arrow-alt-up'></i>-->
+<!--            </a>-->
+            {% if user.is_authenticated %}
+			{% csrf_token %}
+            <a href="{% url 'upvote' post.id %}" name="post_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-up'></i>
+            </a>
+            {% else %}
+            <button data-toggle="modal" class="w3-white" style="border: none;" data-target="#signInModal" name="post_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-up'></i>
+            </button>
+            {% endif %}
+            {% if post.upvote != 0 %}
+                    {{post.upvote}}
+            {% endif %}
+
+            {% if user.is_authenticated %}
+			{% csrf_token %}
+            <a href="{% url 'downvote' post.id %}" name="post_downvote" style="text-decoration: none">
+                        <i class='fas fa-long-arrow-alt-down'></i>
+            </a>
+            {% else %}
+            <button data-toggle="modal" class="w3-white" style="border: none;" data-target="#signInModal" name="post_upvote" style="text-decoration: none">
+                <i class='fas fa-long-arrow-alt-down'></i>
+            </button>
+            {% endif %}
+            {% if post.downvote != 0 %}
+                    {{post.downvote}}
+            {% endif %}
+            {% if post.author == user or user.is_staff %}
+
+                <a href="{% url 'post-update' post.id %}" style="text-decoration: none">update</a>
+                <a href="{% url 'post-delete' post.id %}" style="text-decoration: none">delete</a>
+
+            {% endif %}
+            <span class="w3-right" style="margin-bottom: 0; margin-top: 3px;">
+                {{post.comments.count}} <a href="{% url 'post-detail' post.id %}"><i class='far fa-comment-dots'></i></a>
+            </span>
+        </p>
+      </footer>
+
+  </div>
+</div><br>
+{% endfor %}
+
+{% if posts.has_other_pages %}
+  <!-- <ul class="pagination">
+    {% if posts.has_previous %}
+      <li class="btn fas"><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="btn fas disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in posts.paginator.page_range %}
+      {% if posts.number == i %}
+        <li class="btn w3-light-green"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn"><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+      <li class="btn fas"><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="btn fas disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul> -->
+  <ul class="pagination">
+      <span class="step-links">
+          {% if posts.has_previous %}
+              <a  class="btn btn-outline-warning" style="color: green" href="?page=1">&laquo; first</a>
+              <a  class="btn btn-outline-warning" style="color: green" href="?page={{ posts.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              <strong>Page {{ posts.number }} of {{ posts.paginator.num_pages }}.</strong>
+          </span>
+
+          {% if posts.has_next %}
+              <a  class="btn btn-outline-warning" style="color: green" href="?page={{ posts.next_page_number }}">next</a>
+              <a  class="btn btn-outline-warning" style="color: green" href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+      </span>
+  </ul>
+{% endif %}
+
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postModalLabel">Please log in to continue!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {% load crispy_forms_tags %}
+        <div class="content-section">
+        <form method="POST" action="/login/">
+            {% csrf_token %}
+            <fieldset class="form-group">
+<!--                <legend class="border-bottom-mb-4">Log In</legend>-->
+                <div id="div_id_username" class="form-group">
+                    <label for="id_username" class="col-form-label  requiredField">Username<span class="asteriskField">*</span>
+                    </label>
+                    <div class="">
+                        <input type="text" name="username" autofocus class="textinput textInput form-control" required id="id_username">
+                    </div>
+                </div>
+                <div id="div_id_password" class="form-group">
+                    <label for="id_password" class="col-form-label  requiredField">Password<span class="asteriskField">*</span>
+                    </label>
+                    <div class="">
+                        <input type="password" name="password" class="textinput textInput form-control" required id="id_password">
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need an Account? <a class="ml-2" href="/register/">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

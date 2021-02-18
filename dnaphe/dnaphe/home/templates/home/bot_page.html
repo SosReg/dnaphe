@@ -1,0 +1,32 @@
+
+<title>bot page</title>
+
+{% include 'home/base.html' %}
+{% block content %}
+
+<div class="container w3-margin-top"><br><br>
+    <a class="btn w3-container" href="/onlineKhabarBot">
+        Run onlineKhabar Bot
+    </a>
+    <button class="w3-right"><a href="/botPost">post</a></button>
+    <hr>
+    <a class="btn w3-container" href="/kantipurDailyBot">
+        Run kantipurDaily Bot
+    </a>
+    <button class="w3-right"><a href="/kantipurbotPost">post</a></button>
+    <hr>
+    <a class="btn w3-container" href="/ratopatibot">
+        Run ratopati Bot
+    </a>
+    <button class="w3-right"><a href="/ratopatibotPost">post</a></button>
+    <hr>
+    <a class="btn w3-container" href="/canadanepalbot">
+        Run canadanepalbot Bot
+    </a>
+    <button class="w3-right"><a href="/canadanepalbotPost">post</a></button>
+</div>
+
+{% endblock %}
+
+{% block botcontent %}
+{% endblock %}
