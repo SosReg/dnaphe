@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_6r)8boix6ga40)0mykpo&@rec!!!@1orl5p_&57og+0xd9v0%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG =False
 
 ALLOWED_HOSTS = ['139.59.21.125', 'dnaphe.com', 'www.dnaphe.com']
 

@@ -104,3 +104,21 @@ ls
 mkdir mydir
 ls
 ls -l
+psql -U postgres
+psql -U dnapheuser
+sudo -u postgres
+sudo -u postgres psql
+psql
+exit
+psql
+psql postgres dnaphe
+psql postgres dnapheuser
+cd /home/dregmi/
+ls
+cd dnaphe
+ls
+cd dnaphe
+ls
+cat settings.py 
+psql dnaphe dnapheuser
+su root

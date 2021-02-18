@@ -56,3 +56,16 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return ('/post/%s'  %self.post.id)
+
+
+class T_Jobs(models.Model):
+    job_name = models.CharField(max_length=25)
+    job_desc = models.TextField()
+    trigger = models.IntegerField(default=0)
+    job_status = models.IntegerField(default=0)
+    job_msg = models.TextField(blank=True)
+    dte_last_update = models.DateTimeField(default=timezone.now)
+    #job_name, job_desc, trigger, trigger_desc, job_status, job_msg
+
+    def __str__(self):
+        return self.job_name

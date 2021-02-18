@@ -37,16 +37,16 @@
       <div class="row">
 				{% if post.content %}
                 <div class="container">
-				
+
 				{% if post.url %}
                     <a href="{{ post.url }}" target="_blank" style="text-decoration: none">{{ post.content|linebreaks }} </a>
 <!--                    <a href="{{ post.url }}" target="_blank" style="text-decoration: none">{{ post.content|linebreaks }} </a>-->
-				{% else %}		   
+				{% else %}
 					<p>{{post.content|markdown }}</p>
-				{% endif %}	  
+				{% endif %}
                 </div>
 				{% endif %}
-				{% if post.video_url and post.img_url%}
+				{% if post.video_url %}
 				<div class="w3-container">
                     <iframe width="100%" src="{{post.video_url}}" frameborder="0" allow="gyroscope; encrypted-media; picture-in-picture" allowfullscreen></iframe>
                 </div>
@@ -272,4 +272,3 @@
 </div>
 
 {% endblock content %}
-

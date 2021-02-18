@@ -11,6 +11,10 @@ from django.contrib.auth.models import User
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from .forms import CommentForm, LinkPostForm, TextPostForm, PostUpdateForm
 from django.core.paginator import Paginator
+import requests
+from django.contrib import messages
+
+
 
 
 # Create your views here.
@@ -215,9 +219,30 @@ class PostTextCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        clientkey = self.request.POST['g-recaptcha-response']
+        secretkey = '6Lfz0vgZAAAAAM1H1w4l_d9Elr1-ft8jBmGwtpWW'
+        captchaData = {
+        'secret': secretkey,
+        'response': clientkey
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=captchaData)
+        response = json.loads(r.text)
+        verify = response['success']
+
+        if verify:
+            return super().form_valid(form)
+        else:
+            messages.warning(self.request, f'Please validate the CAPTCHA!!!')
+            form = TextPostForm(self.request.POST) 
+        return render(self.request, 'home/post_form.html', {'form': form})
+
+       
+       
+
+
         #if len(str(form.instance.content)) > 50 and not str(form.instance.content).isspace():
         #    form.instance.content = form.instance.content[:45] + ' ' + form.instance.content[45:90] +'..'
-        return super().form_valid(form)
+ 
 
 # class PostLinkCreateView(LoginRequiredMixin, CreateView):
 #     model = Post
@@ -568,8 +593,18 @@ def userPostListView(request, username):
 def LinkPostCreateView(request):
     # post = get_object_or_404(Post, pk=post_id)
     if request.method == "POST":
+        clientkey = request.POST['g-recaptcha-response']
+        secretkey = '6Lfz0vgZAAAAAM1H1w4l_d9Elr1-ft8jBmGwtpWW'
+        captchaData = {
+        'secret': secretkey,
+        'response': clientkey
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=captchaData)
+        response = json.loads(r.text)
+        verify = response['success']
+        
         form = LinkPostForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and verify:
             post = form.save(commit=False)
             form.instance.author = request.user
 
@@ -624,7 +659,8 @@ def LinkPostCreateView(request):
             post.save()
             page.close()
             return redirect('post-detail', post_id=post.id)
-
+        if not verify:
+            messages.warning(request, f'Please validate the CAPTCHA!!!')        
 
     else:
         form = LinkPostForm()
@@ -773,7 +809,7 @@ def gpbotPost(request):
 
 def ytbotPost(request):
 
-    api_key = "AIzaSyAl8WD8B3r3-ouzfHhuCG09Xj3RNWkt4tw"
+    api_key = "AIzaSyCuaUvnhxfNpcxcfHsl1l09scXwfNvGL8Q"
     maxResults=25
     part = "snippet,contentDetails,statistics"
     chart = "mostPopular"

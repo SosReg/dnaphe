@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import jobs
 from users import views as user_views
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
@@ -45,5 +46,6 @@ urlpatterns = [
     path('post/<int:pk>/delete', views.PostDeleteView.as_view(), name='post-delete'),
     path('post/<int:post_id>/comment/<int:pk>/update', views.CommentUpdateView.as_view(), name='comment-update'),
     path('post/<int:post_id>/comment/<int:pk>/delete', views.CommentDeleteView.as_view(), name='comment-delete'),
-	path('zohoverify/verifyforzoho.html/', views.jpt, name='jpt'),
+	path('jobs/', jobs.coz_func, name='run_job'),
+    path('jobs_page/', jobs.jobs_page, name='jobs_page'),
 ]

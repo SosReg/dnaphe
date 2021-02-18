@@ -12,8 +12,12 @@
                     {{ form|crispy }}
             </fieldset>
             <div class="form-group">
+                  <!--Div tag to get recaptcha box-->
+            <div class="g-recaptcha" data-sitekey="6Lfz0vgZAAAAAEIKLvZEpiCkLWBQGNR7LjyfrceE"></div>
                 <button class="btn btn-outline-info" type="submit">Post</button>
             </div>
         </form>
     </div>
+    <!---Script for recaptcha-->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 {% endblock content %}
