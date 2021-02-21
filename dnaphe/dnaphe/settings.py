@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from dnaphe.secrets import real_key, db_settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,8 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_6r)8boix6ga40)0mykpo&@rec!!!@1orl5p_&57og+0xd9v0%'
+SECRET_KEY = real_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =False
@@ -91,17 +91,8 @@ WSGI_APPLICATION = 'dnaphe.wsgi.application'
 #}
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dnaphe',
-        'USER': 'dnapheuser',
-        'PASSWORD': 'sonyh201rebelt21',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
 
+DATABASES = db_settings
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -146,3 +137,11 @@ LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+

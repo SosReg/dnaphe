@@ -13,9 +13,13 @@ sitemaps = {
 
 urlpatterns = [
 	path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    # path('', views.index, name='index'),
     path('', views.index, name='index'),
+    path('videos', views.videos, name='videos'),
+    path('discussions/', views.index, name='index'),
     path('popular/', views.popular, name='popular'),
     path('news/', views.news, name='news'),
+    path('headlines/', views.news, name='news'),
     path('search/', views.searchView, name='search'),
     path('botpage/', views.botpage, name='botpage'),
     path('onlineKhabarBot/', views.onlineKhabarBot, name='onlineKhabarBot'),

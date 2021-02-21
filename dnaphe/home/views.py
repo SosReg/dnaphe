@@ -20,17 +20,43 @@ from django.contrib import messages
 # Create your views here.
 
 
+# def index(request):
+#     template = 'home/home.html'
+#     # context = [i for i in Post.objects.order_by('-date_posted', '-upvote') if (i.topic == 'news' and i.upvote != 0) or (i.topic != 'news')]
+#     context=[]
+#     for i in Post.objects.order_by('-date_posted', '-upvote'):
+#         if str(i.topic) != 'news':
+#             context.append(i)
+#         elif str(i.topic) == "news" and i.upvote != 0:
+#             context.append(i)
+#         else:
+#             pass
+
+#     page = request.GET.get('page', 1)
+
+#     paginator = Paginator(context, 20)
+#     context = paginator.page(page)
+#     context = {'posts': context}
+#     return render(request, template, context)
+
 def index(request):
     template = 'home/home.html'
     # context = [i for i in Post.objects.order_by('-date_posted', '-upvote') if (i.topic == 'news' and i.upvote != 0) or (i.topic != 'news')]
-    context=[]
-    for i in Post.objects.order_by('-date_posted', '-upvote'):
-        if str(i.topic) != 'news':
-            context.append(i)
-        elif str(i.topic) == "news" and i.upvote != 0:
-            context.append(i)
-        else:
-            pass
+    # context=[]
+    context = Post.objects.exclude(author=User.objects.get(username='dnapheBot'))
+    context = context.order_by('-date_posted')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(context, 20)
+    context = paginator.page(page)
+    context = {'posts': context}
+    return render(request, template, context)
+
+def videos(request):
+    template = 'home/home.html'
+    # context = [i for i in Post.objects.order_by('-date_posted', '-upvote') if (i.topic == 'news' and i.upvote != 0) or (i.topic != 'news')]
+    # context=[]
+    context = Post.objects.filter(topic=Topic.objects.get(topic_text='youtube-nepali'))
 
     page = request.GET.get('page', 1)
 
@@ -38,6 +64,7 @@ def index(request):
     context = paginator.page(page)
     context = {'posts': context}
     return render(request, template, context)
+
 
 def jpt(request):
 	return render(request, 'home/verifyforzoho.html')

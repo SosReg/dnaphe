@@ -64,11 +64,11 @@ h4, h3, p {
 }
 
 
-body {
+/* body {
     background-image: url("/static/home/nepal_640.png");
     background-repeat: repeat-x;
     background-attachment: fixed;
-}
+} */
 
 </style>
 
@@ -87,25 +87,25 @@ body {
       </button>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <div class="navbar-nav mr-auto">
-          <a class="nav-item nav-link w3-text-light-green" href="/popular">
-            {% if request.path == "/popular/" %}
-              <strong> popular </strong>
+          <a class="nav-item nav-link w3-text-light-green" href="/">
+            {% if request.path == "/" %}
+              <strong> discussions </strong>
             {% else %}
-              popular
+              discussions
             {% endif %}
           </a>
-            <a class="nav-item nav-link w3-text-light-green" href="/">
-              {% if request.path == "/" %}
-                <strong> all </strong>
-              {% else %}
-                all
-              {% endif %}
-            </a>
             <a class="nav-item nav-link w3-text-light-green" href="/news">
-              {% if request.path == "/news/" %}
+              {% if request.path == "/news" %}
                 <strong> news </strong>
               {% else %}
-                news
+                  news
+              {% endif %}
+            </a>
+            <a class="nav-item nav-link w3-text-light-green" href="/videos">
+              {% if request.path == "/videos" %}
+                <strong> videos </strong>
+              {% else %}
+                videos
               {% endif %}
             </a>
             <form class="input-group input-group-sm" style="margin-top: 3px;" action="/search" method="get">
@@ -199,6 +199,15 @@ body {
 <div class="w3-card w3-small">
   <ul class="nav  wjustify-content-center" style="width:max-content;">
     <li class="nav-item">
+      <a class="nav-link" href="/">
+        {% if request.path == "/" %}
+          <strong> discussions </strong>
+        {% else %}
+          discussions
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="/news">
         {% if request.path == "/news/" %}
           <strong> news </strong>
@@ -208,20 +217,11 @@ body {
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/popular">
-        {% if request.path == "/popular/" %}
-          <strong> popular </strong>
+      <a class="nav-link" href="/videos">
+        {% if request.path == "/videos" %}
+          <strong> videos </strong>
         {% else %}
-          popular
-        {% endif %}
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/">
-        {% if request.path == "/" %}
-          <strong> all </strong>
-        {% else %}
-          all
+          videos
         {% endif %}
       </a>
     </li>
@@ -329,6 +329,9 @@ body {
               </div>
 
       </div>
+
+      
+     
 <!--******************** end left column *******************************-->
 
 <!--************ start middle column ***********-->
@@ -345,7 +348,7 @@ body {
         {% endfor %}
       {% endif %}
 
-<!--******************** list all the post *************-->
+<!--******************** list videos the post *************-->
 
 
     {% block content %}
@@ -358,7 +361,7 @@ body {
 <!--*************** start right column ******************-->
 
     <div class="col-2 w3-hide-small w3-hide-medium" >
-
+      
     </div>
 
 <!--**************** end right column ********************-->
