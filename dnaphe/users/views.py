@@ -11,7 +11,7 @@ import json
 def register(request):
     if request.method == 'POST':
         clientkey = request.POST['g-recaptcha-response']
-        secretkey = '6Lfz0vgZAAAAAM1H1w4l_d9Elr1-ft8jBmGwtpWW'
+        secretkey = #############################
         captchaData = {
         'secret': secretkey,
         'response': clientkey
