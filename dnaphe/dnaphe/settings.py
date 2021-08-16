@@ -25,7 +25,7 @@ SECRET_KEY = real_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =False
 
-ALLOWED_HOSTS = ['139.59.21.125', 'dnaphe.com', 'www.dnaphe.com']
+ALLOWED_HOSTS = ['dnaphe.com', 'www.dnaphe.com']
 
 
 # Application definition
