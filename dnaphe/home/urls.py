@@ -21,17 +21,8 @@ urlpatterns = [
     path('news/', views.news, name='news'),
     path('headlines/', views.news, name='news'),
     path('search/', views.searchView, name='search'),
-    path('botpage/', views.botpage, name='botpage'),
-    path('onlineKhabarBot/', views.onlineKhabarBot, name='onlineKhabarBot'),
-    path('kantipurDailyBot/', views.kantipurDailyBot, name='kantipurDailyBot'),
-    path('ratopatibot/', views.ratopatibot, name='ratopatibot'),
-    path('canadanepalbot/', views.canadanepalbot, name='canadanepalbot'),
-    path('botPost/', views.botPost, name='botPost'),
-    path('gpbotPost/', views.gpbotPost, name='gpbotPost'),
-    path('ytbotPost/', views.ytbotPost, name='ytbotPost'),
-    path('kantipurbotPost/', views.kantipurbotPost, name='kantipurbotPost'),
-    path('ratopatibotPost/', views.ratopatibotPost, name='ratopatibotPost'),
-    path('canadanepalbotPost/', views.canadanepalbotPost, name='canadanepalbotPost'),
+    
+
     path('post_upvote/<int:post_id>/', views.upvote, name='upvote'),
     path('post_downvote/<int:post_id>/', views.downvote, name='downvote'),
     path('register/', user_views.register, name='register'),
@@ -50,6 +41,5 @@ urlpatterns = [
     path('post/<int:pk>/delete', views.PostDeleteView.as_view(), name='post-delete'),
     path('post/<int:post_id>/comment/<int:pk>/update', views.CommentUpdateView.as_view(), name='comment-update'),
     path('post/<int:post_id>/comment/<int:pk>/delete', views.CommentDeleteView.as_view(), name='comment-delete'),
-	path('jobs/', jobs.coz_func, name='run_job'),
-    path('jobs_page/', jobs.jobs_page, name='jobs_page'),
+
 ]
